@@ -15,7 +15,7 @@ interface IRange extends IModifierRange {
     injection: string;
 }
 
-export class CommentSelectionModifier extends Modifier {
+export class AsciiSelectionModifier extends Modifier {
 
     private _ranges: IRange[] = [];
 

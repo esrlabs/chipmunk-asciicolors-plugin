@@ -5,7 +5,7 @@
 
 //./node_modules/.bin/jasmine-ts src/something.spec.ts
 
-import { CommentSelectionModifier } from '../src/modifier';
+import { AsciiSelectionModifier } from '../src/modifier';
 /**
  * 
  * start: 0,
@@ -80,7 +80,7 @@ describe('Parser tests', () => {
 
     it('Modifier', (done: Function)=> {
         ModifierRowsTest.forEach((row: IModifierTestRow) => {
-            const modifier: CommentSelectionModifier = new CommentSelectionModifier(row.input);
+            const modifier: AsciiSelectionModifier = new AsciiSelectionModifier(row.input);
             expect(modifier.getRanges().length).toBe(row.output.ranges.length);
             modifier.getRanges().forEach((range: any, n: number) => {
                 const out = row.output.ranges[n];

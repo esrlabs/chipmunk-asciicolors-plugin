@@ -1,9 +1,6 @@
 // tslint:disable:object-literal-sort-keys
-import * as Toolkit from 'chipmunk.client.toolkit';
-import { default as AnsiUp } from 'ansi_up';
-
-const ansiup = new AnsiUp();
-ansiup.escape_for_html = false;
+import { Modifier, ARowCommonParser, IRowInfo, EThemeType} from 'chipmunk.client.toolkit';
+import { AsciiSelectionModifier } from './modifier';
 
 const REGS = {
     COLORS: /\x1b\[[\d;]{1,}[mG]/,
@@ -12,25 +9,17 @@ const REGS = {
 
 const ignoreList: { [key: string]: boolean } = {};
 
-export class ASCIIColorsParser extends Toolkit.ARowCommonParser {
+export class ASCIIColorsParser extends ARowCommonParser {
 
-    public parse(str: string, themeTypeRef: Toolkit.EThemeType, row: Toolkit.IRowInfo): string {
+    public parse(str: string, themeTypeRef: EThemeType, row: IRowInfo): Modifier | undefined {
         if (typeof row.sourceName === "string") {
             if (ignoreList[row.sourceName] === undefined) {
                 ignoreList[row.sourceName] = row.sourceName.search(/\.dlt$/gi) !== -1;
             }
-
             if (!ignoreList[row.sourceName]) {
-                if (row.hasOwnStyles) {
-                    // Only strip ANSI escape-codes
-                    return str.replace(REGS.COLORS_GLOBAL, "");
-                } else if (REGS.COLORS.test(str)) {
-                    // ANSI escape-codes to html color-styles
-                    return ansiup.ansi_to_html(str);
-                }
+                return new AsciiSelectionModifier(str);
             }
         }
-
-        return str;
+        return undefined;
     }
 }
