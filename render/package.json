@@ -26,7 +26,16 @@
     "chipmunk.client.toolkit": "^1.0.2"
   },
   "resolutions": {
-    "serialize-javascript": ">=2.1.2"
+    "websocket-extensions": ">=0.1.4",
+    "serialize-javascript": ">=2.1.2",
+    "minimist": ">=0.2.1",
+    "acorn": ">=6.4.1",
+    "kind-of": ">=6.0.3",
+    "mem": ">=4.0.0",
+    "lodash": ">=4.17.19",
+    "js-yaml": ">=3.13.1",
+    "uglify-js": ">=2.6.0",
+    "yargs-parser": ">=13.1.2"
   },
   "repository": {
     "type": "git",
