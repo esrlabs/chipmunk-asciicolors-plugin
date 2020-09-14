@@ -33,8 +33,8 @@ export class CommentSelectionModifier extends Modifier {
                 },
                 {
                     offset: range.end,
-                    injection: `</span>`
-                }
+                    injection: `</span>`,
+                },
             ]);
         });
         return injections;
@@ -76,7 +76,7 @@ export class CommentSelectionModifier extends Modifier {
             const offset: number = typeof args[args.length - 2] === 'number' ? args[args.length - 2] : args[args.length - 3];
             const tag: ITag | undefined = getTag(match);
             if (tag === undefined) {
-                return;
+                return '';
             }
             points.push({ offset: offset, tag: tag });
             return '';
