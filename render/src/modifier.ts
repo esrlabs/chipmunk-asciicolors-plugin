@@ -45,7 +45,26 @@ export class AsciiSelectionModifier extends Modifier {
     }
 
     public obey(ranges: Array<Required<IModifierRange>>) {
-        this._ranges = Modifiers.obey(ranges, this._ranges) as IRange[];
+        const rebuild: IRange[] = [];
+        ranges.forEach((master: Required<IModifierRange>) => {
+            this._ranges.forEach((slave: IRange) => {
+                if (slave.start < master.start && slave.end < master.end) {
+                    slave.end = master.start;
+                    rebuild.push(slave);
+                } else if (slave.start > master.start && slave.end < master.end) {
+                    // Remove range
+                } else if (slave.start > master.start && slave.start < master.end && slave.end > master.end) {
+                    slave.start = master.end;
+                    rebuild.push(slave);
+                } else if (slave.start < master.start && slave.end > master.end) {
+                    const end = slave.end;
+                    slave.end = master.start;
+                    rebuild.push(slave);
+                    rebuild.push({ start: master.end, end: end, injection: slave.injection });
+                }
+            });
+            this._ranges = rebuild;
+        });
     }
 
     public getRanges(): Array<Required<IModifierRange>> {
@@ -54,9 +73,6 @@ export class AsciiSelectionModifier extends Modifier {
 
     public getGroupPriority(): number {
         return 1;
-    }
-
-    public consider(ranges: Array<Required<IModifierRange>>) {
     }
 
     public finalize(str: string): string {
