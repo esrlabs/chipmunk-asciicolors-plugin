@@ -56,6 +56,13 @@ export class AsciiSelectionModifier extends Modifier {
         return 1;
     }
 
+    public consider(ranges: Array<Required<IModifierRange>>) {
+    }
+
+    public finalize(str: string): string {
+        return str.replace(/[\u0000-\u001f]?(\u001b\[[\d;]*[HfABCDsuJKmhIp])/gi, '');
+    }
+
     private _map(row: string) {
         function getTag(str: string): undefined | ITag {
             const ansiup = new AnsiUp();
@@ -81,7 +88,6 @@ export class AsciiSelectionModifier extends Modifier {
             points.push({ offset: offset, tag: tag });
             return '';
         });
-
         points.forEach((current: ITagPoint, index: number) => {
             const next: ITagPoint | undefined = points[index + 1];
             if (current.tag.type === 'close') {
