@@ -50,12 +50,14 @@ export class AsciiSelectionModifier extends Modifier {
         const rebuild: IRange[] = [];
         ranges.forEach((master: Required<IModifierRange>) => {
             this._ranges.forEach((slave: IRange) => {
-                if (slave.start < master.start && slave.end < master.end) {
+                if ((slave.start < master.start && slave.end < master.end) ||
+                    (slave.end === master.end && slave.start < master.start)) {
                     slave.end = master.start;
                     rebuild.push(slave);
                 } else if (slave.start > master.start && slave.end < master.end) {
                     // Remove range
-                } else if (slave.start > master.start && slave.start < master.end && slave.end > master.end) {
+                } else if ((slave.start > master.start && slave.start < master.end && slave.end > master.end) ||
+                           (slave.start === master.start && slave.end > master.end)) {
                     slave.start = master.end;
                     rebuild.push(slave);
                 } else if (slave.start < master.start && slave.end > master.end) {
@@ -78,7 +80,7 @@ export class AsciiSelectionModifier extends Modifier {
     }
 
     public finalize(str: string): string {
-        // return str.replace(/[\u0000-\u001f]?(\u001b\[[\d;]*[HfABCDsuJKmhIp])/gi, '');
+        return str.replace(/[\u0000-\u001f]?(\u001b\[[\d;]*[HfABCDsuJKmhIp])/gi, '');
         return str;
     }
 
