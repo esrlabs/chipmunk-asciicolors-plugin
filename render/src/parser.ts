@@ -1,6 +1,6 @@
 // tslint:disable:object-literal-sort-keys
 import { Modifier, ARowCommonParser, IRowInfo, EThemeType} from 'chipmunk.client.toolkit';
-import { AsciiSelectionModifier } from './modifier';
+import { AsciiModifier } from './modifier';
 
 const REGS = {
     COLORS: /\x1b\[[\d;]{1,}[mG]/,
@@ -17,7 +17,7 @@ export class ASCIIColorsParser extends ARowCommonParser {
                 ignoreList[row.sourceName] = row.sourceName.search(/\.dlt$/gi) !== -1;
             }
             if (!ignoreList[row.sourceName]) {
-                return new AsciiSelectionModifier(str);
+                return new AsciiModifier(str);
             }
         }
         return undefined;

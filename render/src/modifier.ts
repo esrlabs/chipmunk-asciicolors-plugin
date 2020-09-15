@@ -15,7 +15,7 @@ interface IRange extends IModifierRange {
     injection: string;
 }
 
-export class AsciiSelectionModifier extends Modifier {
+export class AsciiModifier extends Modifier {
 
     private _ranges: IRange[] = [];
 
@@ -81,7 +81,10 @@ export class AsciiSelectionModifier extends Modifier {
 
     public finalize(str: string): string {
         return str.replace(/[\u0000-\u001f]?(\u001b\[[\d;]*[HfABCDsuJKmhIp])/gi, '');
-        return str;
+    }
+
+    public getName(): string {
+        return 'AsciiModifier';
     }
 
     private _map(row: string) {
