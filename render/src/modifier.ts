@@ -65,6 +65,8 @@ export class AsciiModifier extends Modifier {
                     slave.end = master.start;
                     rebuild.push(slave);
                     rebuild.push({ start: master.end, end: end, injection: slave.injection });
+                } else {
+                    rebuild.push(slave);
                 }
             });
             this._ranges = rebuild;
