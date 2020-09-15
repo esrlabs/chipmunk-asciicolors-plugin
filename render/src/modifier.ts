@@ -1,4 +1,4 @@
-import { Modifier, IRequest, EType, IHTMLInjection, IModifierRange, Modifiers } from 'chipmunk.client.toolkit';
+import { Modifier, EHTMLInjectionType, EType, IHTMLInjection, IModifierRange, Modifiers } from 'chipmunk.client.toolkit';
 import { default as AnsiUp } from 'ansi_up';
 
 interface ITag {
@@ -30,10 +30,12 @@ export class AsciiSelectionModifier extends Modifier {
             injections.push(...[{
                     offset: range.start,
                     injection: range.injection,
+                    type: EHTMLInjectionType.open,
                 },
                 {
                     offset: range.end,
                     injection: `</span>`,
+                    type: EHTMLInjectionType.close,
                 },
             ]);
         });
@@ -76,7 +78,8 @@ export class AsciiSelectionModifier extends Modifier {
     }
 
     public finalize(str: string): string {
-        return str.replace(/[\u0000-\u001f]?(\u001b\[[\d;]*[HfABCDsuJKmhIp])/gi, '');
+        // return str.replace(/[\u0000-\u001f]?(\u001b\[[\d;]*[HfABCDsuJKmhIp])/gi, '');
+        return str;
     }
 
     private _map(row: string) {
@@ -118,7 +121,7 @@ export class AsciiSelectionModifier extends Modifier {
             }
             this._ranges.push({
                 start: current.offset,
-                end: next.offset - 1,
+                end: next.offset,
                 injection: current.tag.tag,
             });
         });
